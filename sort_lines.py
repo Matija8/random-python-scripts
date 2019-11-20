@@ -15,7 +15,7 @@ def main():
             with open(file, "r") as input:
                 input = sorted(input)
                 write_to_file(make_out_name(file), input)
-        except FileNotFoundError as e:
+        except FileNotFoundError:
             print("Input file: {file} not found. Please confirm file name exists.")
     print("All done!")
     return
@@ -27,7 +27,7 @@ def write_to_file(out_file, lines):
         with open(out_file, "x") as out:
             for line in lines:
                 out.write(line.strip() + '\n')
-    except FileExistsError as e:
+    except FileExistsError:
         print(f"File {out_file} exists already! No changes commited.")
     return
 
