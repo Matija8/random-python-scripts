@@ -50,7 +50,10 @@ def write_to_file(out_file, lines):
 
 def make_out_name(in_name):
     pos = in_name.rfind(".")
-    out_name = in_name[0:pos] + ' - capitalized.' + in_name[pos+1:]
+    if pos > 0:
+        out_name = in_name[0:pos] + ' - capitalized.' + in_name[pos+1:]
+    else:
+        out_name = in_name + ' - capitalized'
     return out_name
 
 
