@@ -35,7 +35,7 @@ def main():
                 # Uncomment below to make a new file:
                 write_to_file(make_out_name(file), out_lines)
                 # Uncomment below to change in place:
-                #write_to_file(file, out_lines)
+                #write_in_place(file, out_lines)
         except FileNotFoundError:
             print("Input file: {file} not found. Please confirm file name exists.")
     print("All done!")
@@ -50,6 +50,16 @@ def write_to_file(out_file, lines):
                 out.write(line.strip() + '\n')
     except FileExistsError:
         print(f"File {out_file} exists already! No changes commited.")
+    return
+
+
+def write_in_place(out_file, lines):
+    try:
+        with open(out_file, "w") as out:
+            for line in lines:
+                out.write(line.strip() + '\n')
+    except IOError:
+        print("IOError!.")
     return
 
 
