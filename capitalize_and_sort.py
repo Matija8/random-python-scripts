@@ -26,16 +26,16 @@ def main():
                             prev_eq_space = False
                         #print(letter, end='')
                         new_line.append(letter)
-                    new_line = ("".join(new_line)).strip() + '\n'
+                    new_line = ("".join(new_line)).strip()
                     #print(line)
                     #print(new_line)
-                    if new_line != "\n":
+                    if new_line != "":
                         out_lines.append(new_line)
                 out_lines = sorted(out_lines)
                 # Uncomment below to make a new file:
-                write_to_file(make_out_name(file), out_lines)
+                #write_to_file_overwrite(make_out_name(file), out_lines)
                 # Uncomment below to change in place:
-                #write_in_place(file, out_lines)
+                write_in_place(file, out_lines)
         except FileNotFoundError:
             print("Input file: {file} not found. Please confirm file name exists.")
     print("All done!")
@@ -47,20 +47,23 @@ def write_to_file(out_file, lines):
     try:
         with open(out_file, "x") as out:
             for line in lines:
-                out.write(line.strip() + '\n')
+                out.write(line + '\n')
     except FileExistsError:
         print(f"File {out_file} exists already! No changes commited.")
     return
 
 
-def write_in_place(out_file, lines):
+def write_to_file_overwrite(out_file, lines):
     try:
         with open(out_file, "w") as out:
             for line in lines:
-                out.write(line.strip() + '\n')
+                out.write(line + '\n')
     except IOError:
         print("IOError!.")
     return
+
+
+write_in_place = write_to_file_overwrite
 
 
 def make_out_name(in_name):
