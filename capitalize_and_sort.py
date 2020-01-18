@@ -7,7 +7,8 @@ def main():
     #print("Starting...")
     args = sys.argv
     if(len(args) < 2):
-        exit("Provide more arguments!")  
+        exit("Provide more arguments!")
+        #args.append("file_to_sort.txt")  
     
     for file in args[1:]:
         #print(f"Reading: {file}...")
@@ -16,7 +17,7 @@ def main():
             with open(file, "r") as lines:
                 for line in lines:
                     new_line = []
-                    prev_eq_space = False
+                    prev_eq_space = True
                     for letter in line:
                         if prev_eq_space and letter.islower():
                             letter = letter.upper()
@@ -31,6 +32,7 @@ def main():
                     #print(new_line)
                     if new_line != "":
                         out_lines.append(new_line)
+                out_lines = list(dict.fromkeys(out_lines))
                 out_lines = sorted(out_lines)
                 # Uncomment below to make a new file:
                 #write_to_file_overwrite(make_out_name(file), out_lines)
