@@ -1,19 +1,23 @@
 #!/usr/bin/env python3
 # encoding: UTF-8
 
-import sys
+import sys, os, glob
 
 def main():
     #print("Starting...")
     args = sys.argv
     if(len(args) < 2):
         exit("Provide more arguments!")
-        #args.append("file_to_sort.txt")
+        #os.chdir("DirectoryName")
+        #for file in glob.glob("*.txt"):
+        #    args.append(file)
     print("Started parsing!")
+    file_num = 0
     for file in args[1:]:
         #print(f"Reading: {file}...")
         try:
             with open(file, "r") as lines:
+                file_num += 1
                 out_lines = []
                 for line in lines:
                     new_line = line.rstrip()
@@ -22,7 +26,7 @@ def main():
                 #write_to_file_overwrite(make_out_name(file), out_lines)
                 # Uncomment below to change in place:
                 write_in_place(file, out_lines)
-                print("  File \"" + file + "\" parsed.")
+                print(f"  File #{file_num} \"" + file + "\" parsed.")
         except FileNotFoundError:
             print("Input file: {file} not found. Please confirm file name exists.")
     print("All done!")
