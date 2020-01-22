@@ -29,6 +29,8 @@ def main():
                 print(f"  File #{file_num} \"" + file + "\" parsed.")
         except FileNotFoundError:
             print("Input file: {file} not found. Please confirm file name exists.")
+        except IsADirectoryError:
+            pass
     print("All done!")
     return
 
