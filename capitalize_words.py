@@ -7,8 +7,8 @@ def main():
     #print("Starting...")
     args = sys.argv
     if(len(args) < 2):
-        exit("Provide more arguments!")  
-    
+        exit("Provide more arguments!")
+
     for file in args[1:]:
         #print(f"Reading: {file}...")
         out_lines = []

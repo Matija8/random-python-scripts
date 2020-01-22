@@ -9,35 +9,20 @@ def main():
     if(len(args) < 2):
         exit("Provide more arguments!")
         #args.append("file_to_sort.txt")
-
+    print("Started parsing!")
     for file in args[1:]:
         #print(f"Reading: {file}...")
-        out_lines = []
         try:
             with open(file, "r") as lines:
+                out_lines = []
                 for line in lines:
-                    new_line = []
-                    prev_eq_space = True
-                    for letter in line:
-                        if prev_eq_space and letter.islower():
-                            letter = letter.upper()
-                        if letter.isspace():
-                            prev_eq_space = True
-                        else:
-                            prev_eq_space = False
-                        #print(letter, end='')
-                        new_line.append(letter)
-                    new_line = ("".join(new_line)).strip()
-                    #print(line)
-                    #print(new_line)
-                    if new_line != "":
-                        out_lines.append(new_line)
-                out_lines = list(dict.fromkeys(out_lines))
-                out_lines = sorted(out_lines)
+                    new_line = line.rstrip()
+                    out_lines.append(new_line)
                 # Uncomment below to make a new file:
                 #write_to_file_overwrite(make_out_name(file), out_lines)
                 # Uncomment below to change in place:
                 write_in_place(file, out_lines)
+                print("  File \"" + file + "\" parsed.")
         except FileNotFoundError:
             print("Input file: {file} not found. Please confirm file name exists.")
     print("All done!")
@@ -61,7 +46,7 @@ def write_to_file_overwrite(out_file, lines):
             for line in lines:
                 out.write(line + '\n')
     except IOError:
-        print("IOError!.")
+        print("IOError on file \"" + out_file + "\"!.")
     return
 
 
