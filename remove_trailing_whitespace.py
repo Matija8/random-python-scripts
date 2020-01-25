@@ -7,10 +7,10 @@ def main():
     #print("Starting...")
     args = sys.argv
     if(len(args) < 2):
-        exit("Provide more arguments!")
-        #os.chdir("DirectoryName")
-        #for file in glob.glob("*.txt"):
-        #    args.append(file)
+        #exit("Provide more arguments!")
+        for root, dirs, files in os.walk("."):
+            dirs[:] = [d for d in dirs if d[0] != '.']
+            args.extend([os.path.join(root, file) for file in files if file[0] != '.'])
     print("Started parsing!")
     file_num = 0
     for file in args[1:]:
