@@ -31,9 +31,7 @@ def flip_first_two_words(line: str) -> str:
     words = line.split()
     if (len(words) < 2):
         return line.strip()
-    tmp = words[0]
-    words[0] = words[1]
-    words[1] = tmp
+    words[0], words[1] = words[1], words[0]
     return (' '.join(words))
 
 
