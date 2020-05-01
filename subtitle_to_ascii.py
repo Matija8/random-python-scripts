@@ -16,10 +16,12 @@ mapping = {
     'Š': 'S',               # Š
     'ž': 'z',               # ž
     'Ž': 'Z',               # Ž
-    }
-
-mapping = dict((re.escape(k), v) for k, v in mapping.items())
+}
 pattern = re.compile("|".join(mapping.keys()))
+
+
+def replace_by_mapping(text):
+    return pattern.sub(lambda m: mapping[re.escape(m.group(0))], text)
 
 
 def main():
@@ -34,12 +36,30 @@ def to_ascii(path):
     try:
         f = codecs.open(path, encoding='latin-1')
         contents = f.read()
-
         contents = pattern.sub(lambda m: mapping[re.escape(m.group(0))], contents)
-
-        print(contents)
+        # print(contents)
+        write_to_file(make_out_name(path), contents)
     except Exception as e:
         print(e)
+
+
+def write_to_file(out_file, text):
+    try:
+        with open(out_file, "w") as out:
+            out.write(text)
+    except IOError:
+        print("IOError!.")
+    return
+
+
+def make_out_name(in_name):
+    pos = in_name.rfind(".")
+    suffix = ' - ascii'
+    if pos > 0:
+        out_name = in_name[0:pos] + suffix + in_name[pos:]
+    else:
+        out_name = in_name + suffix
+    return out_name
 
 
 if __name__ == '__main__':
