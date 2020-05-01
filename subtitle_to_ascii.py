@@ -34,9 +34,9 @@ def main():
 
 def to_ascii(path):
     try:
-        f = codecs.open(path, encoding='latin-1')
+        f = codecs.open(path, encoding='cp1250')
         contents = f.read()
-        contents = pattern.sub(lambda m: mapping[re.escape(m.group(0))], contents)
+        #contents = pattern.sub(lambda m: mapping[re.escape(m.group(0))], contents)
         # print(contents)
         write_to_file(make_out_name(path), contents)
     except Exception as e:
@@ -45,7 +45,7 @@ def to_ascii(path):
 
 def write_to_file(out_file, text):
     try:
-        with open(out_file, "w") as out:
+        with open(out_file, "w", encoding='utf-8') as out:
             out.write(text)
     except IOError:
         print("IOError!.")
