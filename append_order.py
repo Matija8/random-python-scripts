@@ -1,37 +1,45 @@
 #!/usr/bin/env python3
 # encoding: UTF-8
 
-"""
-    Take an integer n and a list of filenames. Append "n+i " to filenames where i increments for each file.
+
+import sys, os
+from typing import List, Union
+from os import PathLike
+
+
+def append_order(n: Union[int, str], file_names: List[PathLike], quiet: bool=False):
+    """
+    Take an integer n and a list of filenames. Append "n+i" (i starts from 0) to filenames where i increments for each file.
     Example:
         Input: 4 docs.txt lists.txt program.c
         Output: "4 docs.txt", "5 lists.txt", "6 program.c"
-"""
+    """
+    try:
+        order = int(n)
+    except ValueError:
+        print('Starting number n is not an integer!')
+        return
 
-import sys, os
+    quiet or print('Parsing...')
+    for file_name in sys.argv[2:]:
+        old_path = os.path.abspath(file_name)
+        new_path = os.path.join(os.path.dirname(old_path), f'{order} {os.path.basename(old_path).strip()}')
+        try:
+            os.rename(old_path, new_path)
+            quiet or print(os.path.basename(new_path))
+            order += 1
+        except FileNotFoundError:
+            print(f'Can\'t find file {file_name}, skipped.')
+    quiet or print('Done parsing.')
 
-def main():
-    usage = """Usage: \n append_order.py starting_number filename1 filename2 filename3..."""
+
+def _main():
+    usage = 'Usage: append_order.py starting_number filename1 filename2 filename3...'
     if len(sys.argv) < 3:
         print(usage)
         return
-    try:
-        order = int(sys.argv[1])
-    except ValueError:
-        print(usage)
-        return
+    append_order(sys.argv[1], sys.argv[2:], True)
 
-    print('Parsing...')
-    for filename in sys.argv[2:]:
-        old_path = os.path.abspath(filename)
-        last_slash = old_path.rindex('/')
-        new_path = f'{old_path[:last_slash]}/{order} {old_path[(last_slash+1):]}'
-        try:
-            os.rename(old_path, new_path)
-            order += 1
-        except FileNotFoundError:
-            print(f'Can\'t find file {filename}, skipped.')
-    print('Done parsing.')
 
 if __name__ == '__main__':
-    main()
+    _main()
