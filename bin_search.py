@@ -41,6 +41,25 @@ def _rand_arr_gen(length, lower=0, upper=100000000):
         yield randint(lower, upper)
 
 
+def _create_sorted_array_json(length=1000000, filename='array.json') -> None:
+    print('Creating the json test array...')
+    start = timer()
+    try:
+        last = 0
+        with open(filename, 'w') as out:
+            out.write('[')
+            for rand in _rand_arr_gen(length, 0, 100):
+                last += rand
+                out.write(f'{last}, ')
+            out.write(f'{last}]')
+    except Exception as e:
+        print('Exception in _create_test_array_json')
+        print(e)
+        exit()
+    end = timer()
+    print(f'Json array created, time elapsed: {end-start}')
+
+
 def _create_test_array(length=1000000, read_json=False, save_json=False, filename='array.json') -> (List[int], int):
     """ Create (or read) a sorted array of integers """
     if read_json:
@@ -49,11 +68,12 @@ def _create_test_array(length=1000000, read_json=False, save_json=False, filenam
     else:
         print('Creating a test array...')
         test_arr = [x for x in _rand_arr_gen(length)]
-    print('Sorting the test array...')
-    test_arr.sort()
-    if save_json:
-        print('Saving array to json...')
-        _save_array_to_json(test_arr, filename)
+        print('Sorting the test array...')
+        test_arr.sort()
+        if save_json:
+            print('Saving array to json...')
+            _save_array_to_json(test_arr, filename)
+    print(f'\tlen(array) = {len(test_arr)}')
     print('Picking random element...')
     x_index = randint(0, length-1)
     x = test_arr[x_index]
@@ -71,12 +91,14 @@ def _read_array_from_json(filename='array.json') -> List[int]:
         with open(filename, 'r') as inp:
             array = json.load(inp)
             return array
-    except Exception:
-        print('Exception in _read_array_from_json')
+    except Exception as e:
+        print('Exception in _read_array_from_json:')
+        print(f'\t{e}')
+        exit()
 
 
 def _main() -> None:
-    test_arr, x = _create_test_array(10000)
+    test_arr, x = _create_test_array()
     start = timer()
     linear = _lin_search(test_arr, x)
     lin_time = timer() - start
@@ -86,6 +108,7 @@ def _main() -> None:
     binary = bin_search(test_arr, x)
     bin_time = timer() - start
     print(f'binary:\n\tindex = {binary[0]};\n\tsearches = {binary[1]};\n\ttime = {bin_time}')
+    print(f'linear time / binary time = {lin_time/bin_time:.3f}')
 
 
 if __name__ == '__main__':
