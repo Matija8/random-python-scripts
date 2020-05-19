@@ -36,7 +36,7 @@ def to_ascii(path):
     try:
         f = codecs.open(path, encoding='cp1250')
         contents = f.read()
-        #contents = pattern.sub(lambda m: mapping[re.escape(m.group(0))], contents)
+        contents = pattern.sub(lambda m: mapping[re.escape(m.group(0))], contents)
         # print(contents)
         write_to_file(make_out_name(path), contents)
     except Exception as e:
