@@ -28,13 +28,16 @@ def main():
     args = sys.argv
     if len(args) < 2:
         exit("Provide more arguments!")
+    # It is asumed that all files in the argument vector have the same encoding.
+    # Common encodings for Serbian .srt subtitles are: cp1250, cp1252, Utf-8...
+    encoding = input('Enter encoding for the inputed srt files: ').strip()
     for file in args[1:]:
-        to_ascii(file)
+        to_ascii(file, encoding)
 
 
-def to_ascii(path):
+def to_ascii(path, inputFileEncoding="cp1252"):
     try:
-        f = codecs.open(path, encoding='cp1250')
+        f = codecs.open(path, encoding=inputFileEncoding)
         contents = f.read()
         contents = pattern.sub(lambda m: mapping[re.escape(m.group(0))], contents)
         # print(contents)
