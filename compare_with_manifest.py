@@ -2,18 +2,21 @@
 # encoding: UTF-8
 
 import sys
+import os
 from os.path import realpath, dirname
-from os import chdir, walk
 from typing import Set, Tuple, Union
 
-def compare_with_manifest(manifest: str, folder: str) -> None:
+def compare_with_manifest(manifest: str, folder: str, from_script_dir=False) -> None:
     '''
     Take all lines from manifest (some_file.txt)
     and see how many of those items (lines) are present
-    as files in folder "folder".
+    as files in folder "folder".\n
+    from_script_dir -> If set to true paths are relative to script
+    directory, and not users (shell) current directory.
     '''
     # Set current working directory to this scripts directory.
-    chdir(dirname(realpath(__file__)))
+    if from_script_dir:
+        os.chdir(dirname(realpath(__file__)))
 
     folder_data = get_from_folder(folder)
     manifest_data, duplicates = get_from_txt(manifest)
@@ -45,7 +48,7 @@ def get_from_folder(folder: str) -> Set[str]:
     with extension stripped.
     '''
     data = set()
-    for _, _, filenames in walk(folder):
+    for _, _, filenames in os.walk(folder):
         for file in filenames:
             name = file.rsplit('.', 1)[0]
             data.add(name)
