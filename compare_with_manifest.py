@@ -4,7 +4,26 @@
 import sys
 import os
 from os.path import realpath, dirname
-from typing import Set, Tuple, Union
+from typing import Set, Tuple, Union, TextIO
+
+
+def start_red_text(stream: TextIO=sys.stdout) -> None:
+    ''' Terminal output is colored red until calling reset_text_color.'''
+    RED = '\033[0;31m'
+    print(f'{RED}', end='')
+
+
+def start_green_text(stream: TextIO=sys.stdout) -> None:
+    ''' Terminal output is colored green until calling reset_text_color.'''
+    GREEN = '\033[0;32m'
+    print(f'{GREEN}', end='')
+
+
+def reset_text_color(stream: TextIO=sys.stdout) -> None:
+    ''' Terminal output color is reset to normal.'''
+    NC  = '\033[0m' # No Color
+    print(f'{NC}', end='')
+
 
 def compare_with_manifest(manifest: str, folder: str, from_script_dir=False) -> None:
     '''
@@ -29,16 +48,25 @@ def compare_with_manifest(manifest: str, folder: str, from_script_dir=False) -> 
     print_sorted_set(manifest_extra)
 
     print('\nTerms not in manifest:\n')
+    start_red_text()
     print_sorted_set(folder_extra)
+    reset_text_color()
 
     print('\nDuplicate manifest terms:\n')
+    start_red_text()
     print_sorted_set(duplicates)
+    reset_text_color()
 
 
     print('\n--- Info ---')
     print('Manifest data:', len(manifest_data))
     print('Folder data:',  len(folder_data))
+    if len(folder_extra) > 0:
+        start_red_text()
+    else:
+        start_green_text()
     print('Folder data not in Manifest:', len(folder_extra))
+    reset_text_color()
     print('Manifest data not in Folder:', len(manifest_extra))
 
 
